@@ -1,34 +1,50 @@
 import React from 'react';
-import Plot from 'react-plotly';
+import Plot from 'react-plotly.js';
 
 class Chart extends React.Component {
     render(){
-        if(this.data.length > 0){
+        if(this.props.data.length > 0){
             let x = [];
             let y = [];
-            this.data.forEach(element => {
-                if(element.marketAverage > 0){
-                    x.push(element.minute);
-                    y.push(element.marketAverage);
-                }
-            });
+            let data = this.props.data;
 
-            let toPlot = {
-                x: x,
-                y: y,
-                mode: 'lines',
-                type: 'scatter',
-                fill: 'tonexty',
-                line: {
-                    color: 'rgb(0,255,0)',
-                    width: 3,
+            for(let i = 0; i < data.length; i++){
+                if(data[i].close > 0){
+                    x.push(data[i].date);
+                    y.push(data[i].close);
                 }
-            }
+            };
+
+            let color = y[0] > y[y.length - 1] ? `rgb(255,0,0)` : `rgb(0, 255, 0)`;
+
+            let min = Math.min(...y);
+            let max = Math.max(...y);
+
+            let toPlot = [
+                    {
+                    x: x,
+                    y: y,
+                    mode: 'lines',
+                    type: 'scatter',
+                    fill: 'tonexty',
+                    line: {
+                        color: color,
+                        width: 3,
+                    }
+                }
+            ];
 
             return(
                 <Plot
                     data={toPlot}
-                    layout={ {width:200, height: 300, title: 'AAPL' }}
+                    layout={{
+                        width:600, 
+                        height: 300, 
+                        title: `${this.props.symbol} Prices`,
+                        yaxis: {
+                            range: [min, max],
+                        } 
+                    }}
                 >
                 </Plot>
             )
