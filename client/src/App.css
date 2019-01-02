@@ -1,5 +1,6 @@
 body{
   background: #282;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .App {
@@ -24,6 +25,37 @@ body{
 
 .App-link {
   color: #61dafb;
+}
+
+.sidebar{
+  max-width: 300px;
+  left: 0;
+  position: absolute;
+}
+
+.sidebar > ul {
+  list-style: none;
+  text-align: left;
+  font-size: 1.2em;
+  padding: 0;
+  margin-left: 10px;
+}
+
+.sidebar > ul > li {
+  padding: 5px;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+a:visited {
+  color: #fff;
+}
+
+a:hover {
+  color: #ddd;
 }
 
 @keyframes App-logo-spin {

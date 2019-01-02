@@ -1,5 +1,4 @@
 const Express = require('express');
-const axios = require('axios');
 const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const PORT = process.env.PORT || 8080;
