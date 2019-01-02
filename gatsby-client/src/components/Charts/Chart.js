@@ -1,17 +1,39 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
+import axios from 'axios';
+
+const APIROOT = process.env.APIURL || 'http://localhost:8080/api';
 
 class Chart extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            data: [],
+        }
+    }
+
+    componentDidMount(){
+        axios.get(APIROOT + `/stock/chart/${this.props.span}/${this.props.symbol}`)
+            .then((res) => {
+                this.setState({
+                    data: res.data,
+                })
+            })
+            .catch(err => {
+                console.log(err)
+            });
+    }
+
     render(){
-        if(this.props.data.length > 0){
+        if(this.state.data.length > 0){
             let x = [];
             let y = [];
-            let data = this.props.data;
+            let data = this.state.data;
 
             for(let i = 0; i < data.length; i++){
-                if(data[i].close > 0){
-                    x.push(data[i].date);
-                    y.push(data[i].close);
+                if(data[i].high > 0){
+                    this.props.span === '1d' ? x.push(data[i].minute) : x.push(data[i].date);
+                    this.props.span === '1d' ? y.push(data[i].high) : y.push(data[i].close);
                 }
             };
 
