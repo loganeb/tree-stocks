@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'gatsby';
 
 class Searchbar extends React.Component {
     constructor(props){
@@ -24,9 +25,9 @@ class Searchbar extends React.Component {
         }
 
         const matchMap = matches.map(match => 
-            <li key={match}>{match}</li>    
+            <li key={match}><Link to={`/search/:${match}`} >{match}</Link></li>    
         );
-        
+
         this.setState({
             matches: matchMap,
         });
