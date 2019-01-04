@@ -623,17 +623,58 @@ pre tt:after {
   }
 }
 
-.ticker > ul{
+.ticker-container {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.ticker-wrap {
+  width: 100%;
+  padding-left: 100%;
+  box-sizing: content-box;
+  overflow: hidden;
+  background: #ddd;
+}
+
+.ticker {
   list-style: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
   font-size: 0.8em;
   padding: 0;
   margin: 0;
-  margin: auto;
+  display:flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  -webkit-animation: ticker 30s infinite linear;
+  animation: ticker 30s infinite linear;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-.ticker > ul > li {
+.ticker > li {
   padding: 5px;
+}
+
+@-webkit-keyframes ticker {
+  0% {
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(-200%,0,0);
+    transform: translate3d(-200%,0,0);
+  }
+}
+
+@keyframes ticker {
+  0% {
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(-200%,0,0);
+    transform: translate3d(-200%,0,0);
+  }
 }

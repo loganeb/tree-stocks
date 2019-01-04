@@ -24,12 +24,14 @@ class Ticker extends React.Component{
     
     render(){
         return(
-            <div className="ticker">
-                <ul>
-                    {this.state.symbols.map(symbol => 
-                        <li key={symbol}>{symbol}</li>    
-                    )}
-                </ul>
+            <div className="ticker-container">
+                <div className="ticker-wrap">
+                    <ul className="ticker">
+                        {this.state.symbols.map(symbol => 
+                            <li key={symbol}>{symbol}</li>    
+                        )}
+                    </ul>
+                </div>
             </div>
         )
     }
