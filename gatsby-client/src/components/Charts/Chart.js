@@ -76,7 +76,6 @@ class Chart extends React.Component {
     else{
         return(
             <div>
-                <h2>Chart</h2>
             </div>
         )
     }

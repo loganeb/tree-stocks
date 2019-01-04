@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const SYMBOLS = require('../symbols');
 
 router.get('/', (req, res) => {
     res.status(200).send('API Running!');
@@ -51,6 +52,10 @@ router.get('/stock/chart/1y/:symbol', (req, res) => {
             console.log(err);
             res.status(400).send('Chart could not be retrieved');
         });
+})
+
+router.get('/stock/symbols', (req, res) => {
+    res.status(200).send(SYMBOLS);
 })
 
 router.post('/login/:username', (req, res) => {
