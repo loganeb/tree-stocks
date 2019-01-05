@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const logger = require('morgan');
 const PORT = process.env.PORT || 8080;
+const mongoose = require('mongoose');
 
 const app = Express();
 

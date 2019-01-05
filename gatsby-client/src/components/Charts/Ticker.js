@@ -14,7 +14,6 @@ class Ticker extends React.Component{
 
         axios.get('http://localhost:8080/api/stock/symbols')
         .then(function(res){
-            console.log(res);
             self.setState({
                 symbols: res.data,
             });

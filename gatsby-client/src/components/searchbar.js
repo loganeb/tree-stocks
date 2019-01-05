@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'gatsby';
 
 class Searchbar extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             matches: [],
@@ -15,17 +15,17 @@ class Searchbar extends React.Component {
         let matches = [];
         const suggestions = this.props.suggestions;
 
-        if(search.length > 0){
+        if (search.length > 0) {
             suggestions.forEach(sgst => {
-                if(sgst.tags.includes(search.toUpperCase())){
+                if (sgst.tags.includes(search.toUpperCase())) {
                     matches.push(sgst.name);
                 }
             });
 
         }
 
-        const matchMap = matches.map(match => 
-            <li key={match}><Link to={`/search/:${match}`} >{match}</Link></li>    
+        const matchMap = matches.map(match =>
+            <li key={match}><Link to={`/search/:${match}`} >{match}</Link></li>
         );
 
         this.setState({
@@ -33,15 +33,22 @@ class Searchbar extends React.Component {
         });
     }
 
-    render(){
-        return(
-            <div className="searchbar">
-                <input type="text" placeholder="Search symbols" onChange={this.mapSuggestions}/>
+    render() {
+        return (
+            <div className="searchbar"
+                style={{
+                    margin: 5,
+                    display: 'inline-block',
+                    right: 20,
+                    top: 25,
+                    position: "absolute",
+                }}>
+                <input type="text" placeholder="Search symbols" onChange={this.mapSuggestions} />
                 <ul className="suggestions">{this.state.matches}</ul>
             </div>
         )
     }
-    
+
 }
 
 export default Searchbar;

@@ -11,6 +11,7 @@ const IndexPage = () => (
     <Chart symbol='ABBV' span='1d'></Chart>
     <Chart symbol='TAP' span='1d'></Chart>
     <Chart symbol='TLRY' span='1y'></Chart>
+    <Link to='/search?message=hello'>Search</Link>
   </Layout>
 );
 

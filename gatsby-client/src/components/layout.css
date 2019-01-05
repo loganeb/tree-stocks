@@ -641,10 +641,10 @@ pre tt:after {
   list-style: none;
   font-size: 0.8em;
   padding: 0;
+  padding-right: 100%;
   margin: 0;
-  display:flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  display:inline-block;
+  text-align: center;
   -webkit-animation: ticker 30s infinite linear;
   animation: ticker 30s infinite linear;
   box-sizing: border-box;
@@ -652,6 +652,7 @@ pre tt:after {
 }
 
 .ticker > li {
+  display: inline;
   padding: 5px;
 }
 
@@ -662,8 +663,8 @@ pre tt:after {
   }
 
   100% {
-    -webkit-transform: translate3d(-200%,0,0);
-    transform: translate3d(-200%,0,0);
+    -webkit-transform: translate3d(-100%,0,0);
+    transform: translate3d(-100%,0,0);
   }
 }
 
@@ -674,7 +675,13 @@ pre tt:after {
   }
 
   100% {
-    -webkit-transform: translate3d(-200%,0,0);
-    transform: translate3d(-200%,0,0);
+    -webkit-transform: translate3d(-100%,0,0);
+    transform: translate3d(-100%,0,0);
+  }
+}
+
+@media (max-width: 600px){
+  .searchbar{
+    visibility: hidden;
   }
 }
