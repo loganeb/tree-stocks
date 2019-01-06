@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const SYMBOLS = require('../symbols');
+const UserController = require('../controllers/userController');
 
 router.get('/', (req, res) => {
     res.status(200).send('API Running!');
@@ -61,6 +62,8 @@ router.get('/stock/symbols', (req, res) => {
 router.post('/login/:username', (req, res) => {
     res.status(201).send(`${req.params.username} signed in!`);
 });
+
+router.post('/user/create', (req, res) => UserController.createUser(req, res) );
 
 module.exports = router;
 
