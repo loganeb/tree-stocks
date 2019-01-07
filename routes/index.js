@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const SYMBOLS = require('../symbols');
 const UserController = require('../controllers/userController');
 
@@ -57,13 +59,30 @@ router.get('/stock/chart/1y/:symbol', (req, res) => {
 
 router.get('/stock/symbols', (req, res) => {
     res.status(200).send(SYMBOLS);
-})
-
-router.post('/login/:username', (req, res) => {
-    res.status(201).send(`${req.params.username} signed in!`);
 });
 
-router.post('/user/create', (req, res) => UserController.createUser(req, res) );
+router.post('/signup', (req, res) => UserController.createUser(req, res));
+
+router.post('/login', (req, res, next) => {
+    console.log('Login request received.');
+    passport.authenticate('login', {session: false}, (err, user, info) => {
+        if(err || !user){
+            return res.status(400).json({
+                message: info ? info.message: 'Login failed',
+                user: user
+            });
+        }
+
+        req.login(user, {session: false}, (err) => {
+            if(err){
+                return res.send(err);
+            }
+
+            const token = jwt.sign(user, process.env.TOKEN_SECRET);
+            return res.json({ user, token});
+        });
+    })(req, res);
+});
 
 module.exports = router;
 
