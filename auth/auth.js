@@ -18,7 +18,13 @@ passport.use('login', new LocalStrategy({
             return done(null, false, {message: 'Invalid username or password.'});
         }
 
-        return done(null, {username: user.username, _id: user._id}, {message: 'Login successful.'});        
+        //If login info is correct, return object containing username, 
+        //id and token exp date
+        return done(null, {
+            username: user.username, 
+            _id: user._id, 
+            exp: Date.now()+(3*24*60*60*1000)
+        }, {message: 'Login successful.'});        
     })
 }));
 
@@ -27,11 +33,12 @@ passport.use(new JWTstrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 
 }, (token, done) => {
-    return User.findOneById(token._id)
-        .then((err, user)=> {
-            return done(null, user)
-        })
-        .catch(err => {
-            return done(err);
-        })
+    if(token.exp < Date.now()){
+        let error = new Error('Token expired.');
+        return done(error);
+    }
+    return User.findOne({_id: token._id}, (err, user) =>{
+        if(err) return done(err);
+        return done(null, {username: user.username, _id: user._id});
+    });
 }));

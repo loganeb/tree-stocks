@@ -29,7 +29,7 @@ router.post('/login', (req, res, next) => {
             }
 
             const token = jwt.sign(user, process.env.TOKEN_SECRET);
-            return res.json({ user, token});
+            return res.json({ username: user.username, token});
         });
     })(req, res);
 });
