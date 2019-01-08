@@ -41,8 +41,9 @@ class Chart extends React.Component {
 
             let color = y[0] > y[y.length - 1] ? `rgb(255,0,0)` : `rgb(0, 255, 0)`;
 
-            let min = Math.min(...y);
-            let max = Math.max(...y);
+            let range = Math.max(...y) - Math.min(...y);
+            let min = Math.min(...y) - range*0.1;
+            let max = Math.max(...y) + range*0.1;
 
             let toPlot = [
                     {
@@ -75,12 +76,12 @@ class Chart extends React.Component {
         }
     
 
-    else{
-        return(
-            <div>
-            </div>
-        )
-    }
+        else{
+            return(
+                <div>
+                </div>
+            )
+        }
 
 }
 };
