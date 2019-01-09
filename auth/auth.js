@@ -1,8 +1,16 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const JWTstrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
 const User = require('../models/User');
+const config = require('../config');
+
+const cookieExtractor = (req) => {
+    let token = null;
+    if(req && req.cookies){
+        token = req.cookies[config.jwtName];
+    }
+    return token;
+}
 
 passport.use('login', new LocalStrategy({
     usernameField: 'username',
@@ -30,7 +38,7 @@ passport.use('login', new LocalStrategy({
 
 passport.use(new JWTstrategy({
     secretOrKey: process.env.TOKEN_SECRET,
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+    jwtFromRequest: cookieExtractor
 
 }, (token, done) => {
     if(token.exp < Date.now()){

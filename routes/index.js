@@ -4,6 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const stockRoutes = require('./stockRoutes');
 const UserController = require('../controllers/userController');
+const config = require('../config');
 
 router.get('/', (req, res) => {
     res.status(200).send('API Running!');
@@ -25,13 +26,23 @@ router.post('/login', (req, res, next) => {
 
         req.login(user, {session: false}, (err) => {
             if(err){
-                return res.send(err);
+                return res.json({ sucess: false, message: 'Authentication failed.'});
             }
 
             const token = jwt.sign(user, process.env.TOKEN_SECRET);
-            return res.json({ username: user.username, token});
+            res.cookie(config.jwtName, token, {
+                httpOnly: true
+            });
+            res.send({success: true, token});
         });
     })(req, res);
+});
+
+router.get('/logout', (req, res, next) => {
+    res.cookie(config.jwtName, '', {maxAge: new Date(0)}).send('Logout successful.');
+    if(next){
+        next();
+    }
 });
 
 module.exports = router;

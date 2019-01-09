@@ -28,6 +28,10 @@ const Header = ({ siteTitle }) => (
           {siteTitle}
         </Link>
       </h1>
+      <nav role="navigation">
+          <Link style={navLinkStyle} to="/user/login">Login</Link>
+          <Link style={navLinkStyle} to="/user/signup">Signup</Link>
+      </nav>
       <Searchbar suggestions={[{name:'ONE', tags:'ONE'},{name:'TWO', tags:'ONE TWO'}]}/>
     </div>
   </div>
@@ -39,6 +43,11 @@ Header.propTypes = {
 
 Header.defaultProps = {
   siteTitle: ``,
+}
+
+let navLinkStyle = {
+  color: 'white',
+  padding: 5
 }
 
 export default Header
