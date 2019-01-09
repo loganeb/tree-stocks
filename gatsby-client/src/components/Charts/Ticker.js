@@ -31,7 +31,7 @@ class Ticker extends React.Component{
                         )}
                     </ul>
                 </div>
-                <style jsx>
+                <style>
                 {`
                     .ticker-container {
                         width: 100%;
