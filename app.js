@@ -3,18 +3,32 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const passport = require('passport');
+const rateLimit = require('express-rate-limit');
 
 const config = require('./config');
 const routes = require('./routes/index');
-const secureRoutes = require('./routes/secureRoutes');
 
+//Authentication configuration
 require('./auth/auth');
 
 const PORT = process.env.PORT || 8080;
 const app = Express();
 
-app.use(bodyParser.urlencoded({extended: false}));
+const apiLimiter = rateLimit({
+    windowMs: 60*1000,
+    max: 100, //API requests blocked after 100 per minute
+    message: 'Too many requests. Try again later.'
+})
+const userLimiter = rateLimit({
+    windowMs: 60*1000,
+    max: 5,  //User route requests blocked after 5 per minute
+    message: 'Too many requests. Try again later.'
+});
+
+//Middleware
+app.use('/', apiLimiter);
+app.use('/api/user', userLimiter);
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(logger('tiny'));
@@ -24,12 +38,13 @@ app.use(function(req, res, next) {
     next();
   });
 
-mongoose.connect(config.dbUri, {useNewUrlParser: true})
+//DB connection
+mongoose.connect(config.dbUri, { useNewUrlParser: true })
     .then(() => console.log('Database connected...'))
     .catch(err => console.log(err));
 
+//Route handling
 app.use('/api', routes);
-app.use('/user', passport.authenticate('jwt', { session: false}), secureRoutes);
 
 app.listen(PORT, () => {
     console.log(`Listening on Port ${PORT}`);

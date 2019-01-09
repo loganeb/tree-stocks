@@ -31,11 +31,11 @@ const Layout = ({ children }) => (
           }}
         >
           {children}
-          <footer>
+          {/* <footer>
             © {new Date().getFullYear()},
             {` `}
             <a href="http://loganbynes.com">Logan Bynes</a>
-          </footer>
+          </footer> */}
         </div>
       </>
     )}
