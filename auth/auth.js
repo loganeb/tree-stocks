@@ -36,15 +36,18 @@ passport.use('login', new LocalStrategy({
     })
 }));
 
+
 passport.use(new JWTstrategy({
     secretOrKey: process.env.TOKEN_SECRET,
-    jwtFromRequest: cookieExtractor
-
-}, (token, done) => {
+    jwtFromRequest: cookieExtractor,
+    passReqToCallback: true
+}, (req, token, done) => {
     if(token.exp < Date.now()){
         let error = new Error('Token expired.');
         return done(error);
     }
+    req._id = token._id;
+    req.username = token.username;
     return User.findOne({_id: token._id}, (err, user) =>{
         if(err) return done(err);
         return done(null, {username: user.username, _id: user._id});

@@ -59,6 +59,7 @@ class Ticker extends React.Component{
                         animation: ticker 30s infinite linear;
                         box-sizing: border-box;
                         overflow: hidden;
+                        white-space: nowrap;
                       }
                       
                       .ticker > li {
