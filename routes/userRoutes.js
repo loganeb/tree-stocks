@@ -8,12 +8,10 @@ const config = require('../config');
 router.post('/signup', (req, res) => UserController.createUser(req, res));
 
 router.post('/login', (req, res, next) => {
-    console.log('Login request received.');
     passport.authenticate('login', {session: false}, (err, user, info) => {
         if(err || !user){
             return res.status(400).json({
-                message: info ? info.message: 'Login failed',
-                user: user
+                success: false
             });
         }
 
@@ -26,7 +24,7 @@ router.post('/login', (req, res, next) => {
             res.cookie(config.jwtName, token, {
                 httpOnly: true
             });
-            res.send({success: true, token});
+            res.send({success: true});
         });
     })(req, res);
 });

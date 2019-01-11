@@ -2,6 +2,7 @@ import { Link } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
 import Searchbar from './searchbar';
+import Navbar from './navbar';
 
 const Header = ({ siteTitle }) => (
   <div
@@ -28,10 +29,7 @@ const Header = ({ siteTitle }) => (
           {siteTitle}
         </Link>
       </h1>
-      <nav role="navigation">
-          <Link style={navLinkStyle} to="/user/login">Login</Link>
-          <Link style={navLinkStyle} to="/user/signup">Signup</Link>
-      </nav>
+      <Navbar></Navbar>
       <Searchbar suggestions={[{name:'ONE', tags:'ONE'},{name:'TWO', tags:'ONE TWO'}]}/>
     </div>
   </div>
@@ -43,11 +41,6 @@ Header.propTypes = {
 
 Header.defaultProps = {
   siteTitle: ``,
-}
-
-let navLinkStyle = {
-  color: 'white',
-  padding: 5
 }
 
 export default Header

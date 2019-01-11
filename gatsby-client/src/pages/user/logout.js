@@ -2,8 +2,7 @@ import Layout from '../../components/layout';
 import React from 'react';
 import { navigate } from 'gatsby';
 import axios from 'axios';
-
-const URL = process.env.APIURL || 'http://localhost:8080/api'
+import apiConfig from '../../../api-config';
 
 export default (props) => {
     if(props.location.state && props.location.state.loggedOut){
@@ -22,8 +21,8 @@ export default (props) => {
                 <div>
                     <button onClick={
                         () => {
-                            axios.get(URL + '/user/logout')
-                                .then(() => navigate('/'))
+                            axios.get(apiConfig.APIURL + '/user/logout', { withCredentials: true})
+                                .then(() => navigate('/') )
                                 .catch((err) => navigate('/'));
                         }
                     }>Yes</button>

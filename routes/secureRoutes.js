@@ -1,8 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/profile', (req, res, next) => {
-    res.send('You are authenticated.');
+router.get('/user', (req, res, next) => {
+    res.json({
+        auth: true,
+        username: req.username,
+        _id: req._id
+    });
+});
+
+router.get('/user/profile', (req, res, next) => {
+    res.json({
+        auth: true,
+        username: req.username,
+        _id: req._id 
+    })
 });
 
 router.post('/user/update', (req, res, next) => {
