@@ -48,6 +48,22 @@ router.get('/chart/1y/:symbol', (req, res) => {
         });
 })
 
+router.get('/ticker', (req, res) => {
+    let tickerData = [];
+    axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${SYMBOLS.join(',')}&types=price`)
+        .then((iexRes) => {
+            Object.keys(iexRes.data).forEach(symbol => {
+                tickerData.push({ symbol: symbol, price: iexRes.data[symbol].price});
+            });
+
+            res.status(200).send(tickerData);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).send('Ticker data could not be retrieved');
+        });
+})
+
 router.get('/symbols', (req, res) => {
     res.status(200).send(SYMBOLS);
 });

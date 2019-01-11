@@ -1,25 +1,26 @@
 const SYMBOLS = [
     'ABBV',
     'MO',
-    'WEED.TO',
+    //'WEED.TO',
     'TAP',
     'CGC',
-    'ABB.TO',
+    //'ABB.TO',
     'TLRY',
     'SMG',
     'GWPH',
     'CRON',
-    'HYYDF',
-    'TRST.TO',
-    'TGOD.TO',
-    'CNTTF',
-    'TGODF',
+    //'HYYDF',
+    //'TRST.TO',
+    //'TGOD.TO',
+    //'CNTTF',
+    //'TGODF',
     'NBEV',
     'CRBP',
-    'HYG.TO',
-    'CANN',
-    'TRTC',
-    'MJ'
+    //'HYG.TO',
+   // 'CANN',
+    //'TRTC',
+    'MJ',
+    'ACB'
 ];
 
 module.exports = SYMBOLS;
