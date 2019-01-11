@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../../components/layout';
+import SEO from '../../components/seo';
 import apiConfig from '../../../api-config';
 import { navigate } from 'gatsby';
 import axios from 'axios';
@@ -37,6 +38,7 @@ class Account extends React.Component{
         if(this.state.auth === true){
             return(
                 <Layout>
+                    <SEO title="Account"></SEO>
                     <div className="account">
                         <div>Username: {this.state.username}</div>
                         <div>ID: {this.state._id}</div>
@@ -46,6 +48,7 @@ class Account extends React.Component{
         }
         return(
             <Layout>
+                <SEO title="Account"/>
                 <div></div>
             </Layout>
         )

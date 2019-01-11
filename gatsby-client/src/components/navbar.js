@@ -27,7 +27,7 @@ class Navbar extends React.Component{
     }
 
     render(){
-        if(this.state.user.auth == true){
+        if(this.state.user.auth === true){
             return(
                 <div className="navbar">
                     <nav>

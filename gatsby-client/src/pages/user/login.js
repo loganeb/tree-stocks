@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from "../../components/layout";
+import SEO from "../../components/seo";
 import { Link, navigate } from 'gatsby';
 import axios from 'axios';
 import apiConfig from '../../../api-config';
@@ -71,6 +72,7 @@ class Login extends React.Component{
         if(this.state.user.auth === false){
             return(
                 <Layout>
+                    <SEO title="Login"/>
                     <div className="login-form">
                         <h1>Login</h1>
                         <h3 className="error">{this.state.errorMessage}</h3>
@@ -91,6 +93,7 @@ class Login extends React.Component{
         }
         return(
             <Layout>
+                <SEO title="login"/>
                 <h3>You are already logged in.</h3>
                 <Link to="/user/logout">Logout</Link>
             </Layout>

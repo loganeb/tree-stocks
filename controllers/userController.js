@@ -10,7 +10,9 @@ module.exports = {
                 console.log(err);
                 res.status(400).send('Error creating user.')
             }
-            res.status(201).send(user._id);
+            else{
+                res.status(201).send(user.username);
+            }
         })
     },
 

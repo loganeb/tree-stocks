@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from "../../components/layout";
+import SEO from "../../components/seo";
 import { navigate } from 'gatsby';
 import axios from 'axios';
 
@@ -46,8 +47,9 @@ class Signup extends React.Component{
                 setTimeout(function(){navigate('/user/login')}, 3000);
             })
             .catch(function(error) {
-                this.setState({
-                    errorMessage: 'Error: Signup could not be completed.'
+                console.log(error);
+                self.setState({
+                    errorMessage: 'Username or email already in use.'
                 })
             });
             return;
@@ -70,6 +72,7 @@ class Signup extends React.Component{
         if(this.state.success){
             return(
                 <Layout>
+                    <SEO title="Signup"/>
                     <h3>Signup Successful. Redirecting to Login...</h3>
                 </Layout>
             )
@@ -77,6 +80,7 @@ class Signup extends React.Component{
 
         return(
             <Layout>
+                <SEO title="Signup"/>
                 <div className="signup-form">
                     <h1 className="signup-header">Signup</h1>
                     <h3 className="error">{this.state.errorMessage}</h3>
