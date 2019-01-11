@@ -16,7 +16,21 @@ const UserSchema = new Schema({
         type:String,
         required: true,
         unique: true
-    }
+    },
+    joined: {
+        type: Date,
+        default: Date.now
+    },
+    portfolio: [{
+        symbol: {
+            type: String,
+            unique: true
+        },
+        added: {
+            type: Date,
+            default: Date.now
+        }
+    }]
 });
 
 UserSchema.pre('save', async function(next){

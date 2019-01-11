@@ -49,9 +49,9 @@ router.get('/chart/1y/:symbol', (req, res) => {
 })
 
 router.get('/ticker', (req, res) => {
-    let tickerData = [];
     axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${SYMBOLS.join(',')}&types=price`)
-        .then((iexRes) => {
+        .then((iexRes) => { 
+            let tickerData = [];
             Object.keys(iexRes.data).forEach(symbol => {
                 tickerData.push({ symbol: symbol, price: iexRes.data[symbol].price});
             });

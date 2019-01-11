@@ -22,7 +22,14 @@ class Login extends React.Component{
     }
 
     componentDidMount(){
-
+        let self = this;
+        axios.get(apiConfig.APIURL + '/secure/user', { withCredentials: true })
+            .then((res) => {
+                self.setState({
+                    user: res.data
+                });
+            })
+            .catch(err => {});
     }
 
     handleChange(e){
@@ -69,7 +76,7 @@ class Login extends React.Component{
     }
 
     render(){
-        if(this.state.user.auth === false){
+        if(!this.state.user.auth){
             return(
                 <Layout>
                     <SEO title="Login"/>

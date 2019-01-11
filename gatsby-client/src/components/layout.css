@@ -626,6 +626,7 @@ pre tt:after {
 
 .ticker-wrap {
   width: 100%;
+  padding: 0;
   padding-left: 100%;
   box-sizing: content-box;
   overflow: hidden;
@@ -635,7 +636,8 @@ pre tt:after {
 .ticker {
   list-style: none;
   font-size: 0.8em;
-  padding: 0;
+  padding: 3px;
+  padding-bottom: 0;
   padding-right: 100%;
   margin: 0;
   display:inline-block;
@@ -649,6 +651,11 @@ pre tt:after {
 
 .ticker > li {
   display: inline;
+  padding: 5px;
+  border-left: 1px solid black;
+}
+
+.ticker > li > span {
   padding: 5px;
 }
 
