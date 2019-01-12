@@ -14,6 +14,7 @@ class Account extends React.Component{
             _id: '',
             joined: ''
         }
+        this.loadPortfolio = this.loadPortfolio.bind(this);
     }
 
     componentDidMount(){
@@ -32,6 +33,10 @@ class Account extends React.Component{
                 }
             })
             .catch((err) => navigate('/user/login'))
+    }
+
+    loadPortfolio(){
+
     }
 
     render(){

@@ -1,18 +1,49 @@
 import React from 'react';
 import { Link } from 'gatsby';
+import axios from 'axios';
+import apiConfig from '../../api-config';
 
 import Layout from '../components/layout';
 import SEO from '../components/seo';
-import Chart from '../components/Charts/Chart';
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" keywords={[`stocks`, `cannabis`, `prices`]} />
-    <Chart symbol='ABBV' span='1d'></Chart>
-    <Chart symbol='TAP' span='1d'></Chart>
-    <Chart symbol='TLRY' span='1y'></Chart>
-    <Link to='/search?message=hello'>Search</Link>
-  </Layout>
-);
+class IndexPage extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      newsStories: []
+    }
+  }
+
+  componentDidMount(){
+    let self = this;
+
+    axios.get(apiConfig.APIURL + '/stock/news')
+      .then((res) => {
+        self.setState({
+          newsStories: res.data.slice(0, 5)
+        })
+      })
+      .catch(err => {})
+  }
+  
+  render(){
+    return(
+      <Layout>
+        <SEO title="Home" keywords={[`stocks`, `cannabis`, `prices`]} />
+        <h2 style={{paddingTop: 10}}>Latest News</h2>
+        {this.state.newsStories.map(story => 
+          <div className="story">
+            <h4 className="story-headline">
+              <a href={story.url} style={{color: '#333'}}>
+                {story.headline}
+              </a>
+            </h4>
+            <p>{story.summary}</p>
+          </div>
+        )}
+      </Layout>
+    );
+  }
+}
 
 export default IndexPage;

@@ -630,7 +630,7 @@ pre tt:after {
   padding-left: 100%;
   box-sizing: content-box;
   overflow: hidden;
-  background: #ddd;
+  background: rgba(0,0,0,0.2);
 }
 
 .ticker {
@@ -652,7 +652,11 @@ pre tt:after {
 .ticker > li {
   display: inline;
   padding: 5px;
-  border-left: 1px solid black;
+  border-right: 1px solid rgba(0,0,0,0.5);
+}
+
+.ticker:last-child {
+  border: 0 0 0 0;
 }
 
 .ticker > li > span {

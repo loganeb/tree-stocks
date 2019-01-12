@@ -32,7 +32,14 @@ class Ticker extends React.Component{
                             key={symbol.symbol}
                             >
                                 {symbol.symbol}
-                                <span style={{color: symbol.price < 10 ? 'red' : 'green'}}>${symbol.price}</span>
+                                <span>
+                                    ${(symbol.price).toFixed(2)}(
+                                    <span style={{color: symbol.change < 0 ? 'red' : 'green'}}>
+                                        {symbol.change < 0 ? '-' : '+'}
+                                        {Math.round(symbol.change * 10000)/100}%
+                                    </span>
+                                    )
+                                </span>
                             </li>    
                         )}
                     </ul>

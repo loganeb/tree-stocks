@@ -8,19 +8,24 @@ class Navbar extends React.Component{
         super(props);
         this.state = {
             user: {
-                _id:'',
                 username: '',
                 auth: false
             }
         }
     }
+
     componentDidMount(){
         var self = this;
 
         axios.get(apiConfig.APIURL + '/secure/user', { withCredentials: true})
             .then((res) => {
+                let username = res.data.username;
+                username = username.charAt(0).toUpperCase() + username.slice(1);
                 self.setState({
-                    user: res.data
+                    user: {
+                        auth: res.data.auth,
+                        username: username
+                    }
                 });
             })
             .catch(err => {})

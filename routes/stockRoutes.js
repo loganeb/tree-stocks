@@ -49,11 +49,15 @@ router.get('/chart/1y/:symbol', (req, res) => {
 })
 
 router.get('/ticker', (req, res) => {
-    axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${SYMBOLS.join(',')}&types=price`)
+    axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${SYMBOLS.join(',')}&types=quote`)
         .then((iexRes) => { 
             let tickerData = [];
             Object.keys(iexRes.data).forEach(symbol => {
-                tickerData.push({ symbol: symbol, price: iexRes.data[symbol].price});
+                tickerData.push({ 
+                    symbol: symbol, 
+                    price: iexRes.data[symbol].quote.latestPrice, 
+                    change: iexRes.data[symbol].quote.changePercent
+                });
             });
 
             res.status(200).send(tickerData);
@@ -67,5 +71,21 @@ router.get('/ticker', (req, res) => {
 router.get('/symbols', (req, res) => {
     res.status(200).send(SYMBOLS);
 });
+
+router.get('/news', (req, res) => {
+    axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${SYMBOLS.join(',')}&types=news`)
+        .then((iexRes) => {
+            let stories = [];
+            Object.keys(iexRes.data).forEach(symbol => {
+                stories.push(...iexRes.data[symbol].news);
+            });
+
+            res.status(200).send(stories);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).send('News could not be retrieved');
+        })
+})
 
 module.exports = router;
