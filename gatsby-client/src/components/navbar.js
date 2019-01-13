@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'gatsby';
 import axios from 'axios';
 import apiConfig from '../../api-config';
+import './CSS/navbar.css';
 
 class Navbar extends React.Component{
     constructor(props){
@@ -36,10 +37,10 @@ class Navbar extends React.Component{
             return(
                 <div className="navbar">
                     <nav>
-                        <Link to="/user/account">{this.state.user.username}</Link>
+                        <Link to="/user/account">Hi, {this.state.user.username}!</Link>
+                        <Link to="/user/account">Account</Link>
                         <Link to="/user/logout">Logout</Link>
                     </nav>
-                    
                 </div>
             )
         }

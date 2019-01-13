@@ -40,7 +40,7 @@ class Searchbar extends React.Component {
                     margin: 5,
                     display: 'inline-block',
                     right: 20,
-                    top: 25,
+                    top: 60,
                     position: "absolute",
                 }}>
                 <input type="text" placeholder="Search symbols" onChange={this.mapSuggestions} />

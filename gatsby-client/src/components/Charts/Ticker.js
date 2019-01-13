@@ -44,6 +44,80 @@ class Ticker extends React.Component{
                         )}
                     </ul>
                 </div>
+                <style>
+                    {`
+                        .ticker-container {
+                            width: 100%;
+                            overflow: hidden;
+                            box-sizing: border-box;
+                            font-family: serif;
+                          }
+                          
+                          .ticker-wrap {
+                            width: 100%;
+                            padding: 0;
+                            padding-left: 100%;
+                            box-sizing: content-box;
+                            overflow: hidden;
+                            background: rgba(0,0,0,0.2);
+                          }
+                          
+                          .ticker {
+                            list-style: none;
+                            font-size: 0.8em;
+                            padding: 3px;
+                            padding-bottom: 0;
+                            padding-right: 100%;
+                            margin: 0;
+                            display:inline-block;
+                            text-align: center;
+                            -webkit-animation: ticker 35s infinite linear;
+                            animation: ticker 35s infinite linear;
+                            box-sizing: border-box;
+                            overflow: hidden;
+                            white-space: nowrap;
+                          }
+                          
+                          .ticker > li {
+                            display: inline;
+                            padding: 5px;
+                            border-right: 1px solid rgba(0,0,0,0.5);
+                          }
+                          
+                          .ticker > :nth-last-child(1) {
+                            border: none;
+                          }
+                          
+                          .ticker > li > span {
+                            padding: 5px;
+                          }
+                          
+                          
+                          @-webkit-keyframes ticker {
+                            0% {
+                              -webkit-transform: translate3d(0,0,0);
+                              transform: translate3d(0,0,0);
+                            }
+                          
+                            100% {
+                              -webkit-transform: translate3d(-100%,0,0);
+                              transform: translate3d(-100%,0,0);
+                            }
+                          }
+                          
+                          @keyframes ticker {
+                            0% {
+                              -webkit-transform: translate3d(0,0,0);
+                              transform: translate3d(0,0,0);
+                            }
+                          
+                            100% {
+                              -webkit-transform: translate3d(-100%,0,0);
+                              transform: translate3d(-100%,0,0);
+                            }
+                          }
+                    `}
+                </style>
             </div>
         )
     }
