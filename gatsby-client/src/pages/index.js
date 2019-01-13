@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'gatsby';
 import axios from 'axios';
 import apiConfig from '../../api-config';
 
@@ -32,7 +31,7 @@ class IndexPage extends React.Component{
         <SEO title="Home" keywords={[`stocks`, `cannabis`, `prices`]} />
         <h2 style={{paddingTop: 10}}>Latest News</h2>
         {this.state.newsStories.map(story => 
-          <div className="story">
+          <div className="story" key={story.datetime}>
             <h4 className="story-headline">
               <a href={story.url} style={{color: '#333'}}>
                 {story.headline}

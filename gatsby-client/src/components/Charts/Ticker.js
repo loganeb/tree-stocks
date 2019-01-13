@@ -31,7 +31,7 @@ class Ticker extends React.Component{
                             <li 
                             key={symbol.symbol}
                             >
-                                {symbol.symbol}
+                                <strong>{symbol.symbol}</strong>
                                 <span>
                                     ${(symbol.price).toFixed(2)}(
                                     <span style={{color: symbol.change < 0 ? 'red' : 'green'}}>
