@@ -35,7 +35,7 @@ const Header = ({ siteTitle }) => (
           </Link>
         </h1>
         <h5 style={{color:'#fff', marginTop: 5}}>
-          Cannabis industry financial news and stock prices
+          Financial news and stock prices from the cannabis industry
         </h5>
         <Searchbar suggestions={[{name:'ONE', tags:'ONE'},{name:'TWO', tags:'ONE TWO'}]}/>
       </div>
