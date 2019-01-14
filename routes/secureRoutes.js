@@ -18,10 +18,12 @@ router.get('/user/profile', (req, res) => {
     });
 });
 
-router.post('/user/portfolio/add', UserController.addToUserPortfolio);
+router.post('/user/watchlist/add', UserController.addToWatchlist);
 
 router.post('/user/update', (req, res, next) => {
     res.send(`Update to ${req.username}'s profile successful.`)
 });
+
+router.post('/user/watchlist/update', UserController.updateWatchlist);
 
 module.exports = router;

@@ -21,23 +21,45 @@ module.exports = {
             if(err){
                  res.status(404).send(err);
             }
-            else res.status(201).send(user.username);
+            else res.status(201).send({
+                username: user.username, 
+                _id: _id, 
+                watchlist: user.watchlist
+            });
         });
+
     },
 
-    async addToUserPortfolio(req, res){
+    addToWatchlist(req, res){
         let symbols = req.body.symbols;
         let query = {_id: req._id};
-        let update = {$push: {'portfolio': {$each: symbols}}};
-        User.findOneAndUpdate(query, update, { new: true }, async (err, user) => {
+        let update = {$push: {'watchlist': {$each: symbols}}};
+        User.findOneAndUpdate(query, update, { new: true }, (err, user) => {
             if(err){
-                let error = new Error('User not found.')
+                let error = new Error('Symbols could not be added.')
                 res.status(400).send(error);
             }else{
-                const portfolio = user.portfolio;
-                res.status(201).send(portfolio);
+                res.status(201).send({watchlist: user.watchlist});
+            }
+        })
+    },
+
+    updateWatchlist(req, res){
+        let symbols = req.body.symbols;
+        let query = {_id: req._id};
+        let update = {watchlist: symbols};
+
+        User.findOneAndUpdate(query, update, {new: true}, (err, user) => {
+            if(err){
+                let error = new Error('Watchlist could not be updated.')
+                res.status(400).send(error);
+            }else{
+                res.status(201).send({watchlist: user.watchlist});
             }
         })
     }
+    
+
+
 
 }

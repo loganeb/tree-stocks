@@ -21,16 +21,9 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    portfolio: [{
-        symbol: {
-            type: String,
-            unique: true
-        },
-        added: {
-            type: Date,
-            default: Date.now
-        }
-    }]
+    watchlist: [{
+        type: String
+    }],
 });
 
 UserSchema.pre('save', async function(next){
