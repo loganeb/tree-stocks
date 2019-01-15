@@ -15,8 +15,11 @@ class Watchlist extends React.Component {
             auth: null,
             _id: '',
             username: '',
-            watchlist: []
+            watchlist: [],
+            input: ''
         }
+        this.handleAdd = this.handleAdd.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount(){
@@ -47,6 +50,22 @@ class Watchlist extends React.Component {
             });
     }
 
+    handleChange(e){
+        this.setState({
+            input: e.target.value
+        });
+    }
+
+    handleAdd(){
+        axios.post(APIURL + '/secure/user/watchlist/add',
+                { symbols: [this.state.input] },
+                { withCredentials: true })
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {console.log(err)})
+    }
+
     render(){
         if(this.state.auth === null){
             return(
@@ -64,6 +83,15 @@ class Watchlist extends React.Component {
                     <SEO title="Watchlist"/>
                     <div className="watchlist-header">
                         <h2>{this.state.username}'s Watchlist</h2>
+                    </div>
+                    <div className="watchlist-form">
+                        <h3>Add a symbol to your watchlist: </h3>
+                        <input 
+                        type="text" 
+                        onChange={this.handleChange}
+                        placeholder="Enter symbol or name"
+                        />
+                        <button onClick={this.handleAdd}>Add</button>
                     </div>
                     <div className="watchlist">
                         {this.state.watchlist.map(symbol => 
