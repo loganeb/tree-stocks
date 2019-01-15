@@ -4,6 +4,7 @@ import SEO from "../../components/seo";
 import { Link, navigate } from 'gatsby';
 import Cookies from 'js-cookie';
 import apiConfig from '../../../api-config';
+import axios from 'axios';
 
 const APIURL = apiConfig.APIURL;
 
@@ -11,38 +12,43 @@ class Watchlist extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            user:{
-                auth: null,
-                _id: '',
-                username: ''
-            }
+            auth: null,
+            _id: '',
+            username: '',
+            watchlist: []
         }
     }
 
     componentDidMount(){
         let user = Cookies.getJSON('user');
-        if(user && user["auth"] === true){
+        if(user && user.auth === true){
             this.setState({
-                user:{
-                    auth: true,
-                    username: user["username"]
-                }
+                auth: true,
+                username: user.username
             });
+
+            this.loadWatchlist();
         }else{
             this.setState({
-                user:{
-                    auth: false
-                }
+                auth: false
             })
         }
     }
 
     loadWatchlist(){
-
+        axios.get(APIURL + '/secure/user/watchlist', { withCredentials: true })
+            .then(res => {
+                this.setState({
+                    watchlist: res.data
+                });
+            })
+            .catch(err => {
+                console.log('Error getting watchlist.');
+            });
     }
 
     render(){
-        if(this.state.user.auth === null){
+        if(this.state.auth === null){
             return(
                 <Layout>
                     <SEO title="Watchlist"/>
@@ -52,12 +58,17 @@ class Watchlist extends React.Component {
                 </Layout>
             )
         }
-        else if(this.state.user.auth === true){
+        else if(this.state.auth === true){
             return(
                 <Layout>
                     <SEO title="Watchlist"/>
+                    <div className="watchlist-header">
+                        <h2>{this.state.username}'s Watchlist</h2>
+                    </div>
                     <div className="watchlist">
-                        <h2>{this.state.user.username}'s Watchlist</h2>
+                        {this.state.watchlist.map(symbol => 
+                                <h6 key={symbol}>{symbol}</h6>
+                        )}
                     </div>
                     <style>
                         {style}
@@ -83,7 +94,7 @@ class Watchlist extends React.Component {
 }
 
 const style = `
-    .watchlist{
+    .watchlist-header{
         margin-top: 10px;
     }
 `

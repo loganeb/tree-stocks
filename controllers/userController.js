@@ -15,7 +15,7 @@ module.exports = {
     },
 
     findUserById(req, res){
-        let _id = req.body._id;
+        let _id = req._id;
 
         User.findOne({_id: _id}, (err, user) => {
             if(err){
@@ -28,6 +28,22 @@ module.exports = {
             });
         });
 
+    },
+
+    getWatchlist(req, res){
+        if(req._id){
+            User.findOne({_id: req._id}, (err, user) => {
+                if(err){
+                    let error = new Error('User watchlist could not be found.');
+                    res.status(400).send(error);
+                    return;
+                }
+                res.status(200).send(user.watchlist);
+            });
+        }else{
+            let error = new Error('User id invalid.');
+            res.status(400).send(error);
+        }
     },
 
     addToWatchlist(req, res){
