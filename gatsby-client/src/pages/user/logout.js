@@ -4,6 +4,7 @@ import React from 'react';
 import { navigate } from 'gatsby';
 import axios from 'axios';
 import apiConfig from '../../../api-config';
+import Cookies from 'js-cookie';
 
 export default (props) => {
     if(props.location.state && props.location.state.loggedOut){
@@ -25,7 +26,10 @@ export default (props) => {
                     <button onClick={
                         () => {
                             axios.get(apiConfig.APIURL + '/user/logout', { withCredentials: true})
-                                .then(() => navigate('/') )
+                                .then(() =>{ 
+                                    Cookies.set('user', '', {expires: 0});
+                                    navigate('/');
+                                 })
                                 .catch((err) => navigate('/'));
                         }
                     }>Yes</button>

@@ -4,35 +4,29 @@ import SEO from '../../components/seo';
 import apiConfig from '../../../api-config';
 import { navigate } from 'gatsby';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 class Account extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             auth: false,
-            username: '',
-            _id: '',
-            joined: ''
+            username: ''
         }
         this.loadPortfolio = this.loadPortfolio.bind(this);
     }
 
     componentDidMount(){
-        const self = this;
-        axios.get(apiConfig.APIURL + '/secure/user/profile', {withCredentials: true})
-            .then((res) => {
-                if(res.data.auth === true){
-                    let {auth, username, _id} = res.data
-                    self.setState({
-                        auth: auth,
-                        username: username,
-                        _id: _id
-                    });
-                }else{
-                    navigate('/user/login');
-                }
-            })
-            .catch((err) => navigate('/user/login'))
+        let user = Cookies.getJSON('user');
+
+        if(user && user.auth === true){
+            this.setState({
+                username: user.username,
+                auth: true
+            });
+        }else{
+            navigate('/user/login');
+        }
     }
 
     loadPortfolio(){
@@ -46,7 +40,6 @@ class Account extends React.Component{
                     <SEO title="Account"></SEO>
                     <div className="account">
                         <div>Username: {this.state.username}</div>
-                        <div>ID: {this.state._id}</div>
                     </div>
                 </Layout>
             )

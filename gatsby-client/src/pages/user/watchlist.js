@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from "../../components/layout";
 import SEO from "../../components/seo";
 import { Link, navigate } from 'gatsby';
-import axios from 'axios';
+import Cookies from 'js-cookie';
 import apiConfig from '../../../api-config';
 
 const APIURL = apiConfig.APIURL;
@@ -20,36 +20,21 @@ class Watchlist extends React.Component {
     }
 
     componentDidMount(){
-        let self = this;
-
-        axios.get(APIURL + '/secure/user', {withCredentials: true})
-            .then(res => {
-                if(res.data.auth === true){
-                    let data = res.data;
-                    self.setState({
-                        user: {
-                            auth: true,
-                            _id: data._id,
-                            username: data.username.charAt(0).toUpperCase() + data.username.slice(1)
-                        }
-                    });
-                    self.loadWatchlist();
+        let user = Cookies.getJSON('user');
+        if(user && user["auth"] === true){
+            this.setState({
+                user:{
+                    auth: true,
+                    username: user["username"]
                 }
-                else{
-                    self.setState({
-                        user:{
-                            auth: false
-                        }
-                    });
+            });
+        }else{
+            this.setState({
+                user:{
+                    auth: false
                 }
             })
-            .catch( err => {
-                self.setState({
-                    user:{
-                        auth: false
-                    }
-                })
-            })
+        }
     }
 
     loadWatchlist(){

@@ -1,8 +1,9 @@
 import React from 'react';
 import Layout from "../../components/layout";
 import SEO from "../../components/seo";
-import { navigate } from 'gatsby';
+import { Link, navigate } from 'gatsby';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const URL = process.env.APIURL || 'http://localhost:8080/api';
 
@@ -10,6 +11,7 @@ class Signup extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            auth: false,
             username:'',
             email:'',
             password: '',
@@ -18,6 +20,15 @@ class Signup extends React.Component{
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount(){
+        let user = Cookies.getJSON('user');
+        if(user && user.auth === true){
+            this.setState({
+                auth: true
+            });
+        }
     }
 
     handleChange(e){
@@ -69,6 +80,17 @@ class Signup extends React.Component{
     }
 
     render(){
+        if(this.state.auth){
+            return(
+                <Layout>
+                    <SEO title="Signup"/>
+                    <h3>You are already logged in.</h3>
+                    <h5><Link to="/user/logout">Logout</Link></h5>
+                </Layout>
+            )
+        }
+
+
         if(this.state.success){
             return(
                 <Layout>

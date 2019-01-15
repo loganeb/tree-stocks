@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'gatsby';
-import axios from 'axios';
-import apiConfig from '../../api-config';
+import Cookies from 'js-cookie';
 import './CSS/navbar.css';
 
 class Navbar extends React.Component{
@@ -16,20 +15,15 @@ class Navbar extends React.Component{
     }
 
     componentDidMount(){
-        var self = this;
-
-        axios.get(apiConfig.APIURL + '/secure/user', { withCredentials: true})
-            .then((res) => {
-                let username = res.data.username;
-                username = username.charAt(0).toUpperCase() + username.slice(1);
-                self.setState({
-                    user: {
-                        auth: res.data.auth,
-                        username: username
-                    }
-                });
-            })
-            .catch(err => {})
+        let user = Cookies.getJSON('user');
+        if(user && user["auth"] === true){
+            this.setState({
+                user:{
+                    auth: true,
+                    username: user["username"]
+                }
+            });
+        }
     }
 
     render(){
@@ -38,6 +32,7 @@ class Navbar extends React.Component{
                 <div className="navbar">
                     <nav>
                         <Link to="/user/account">Hi, {this.state.user.username}!</Link>
+                        <Link to="/user/watchlist">Watchlist</Link>
                         <Link to="/user/account">Account</Link>
                         <Link to="/user/logout">Logout</Link>
                     </nav>

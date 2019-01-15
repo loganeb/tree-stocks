@@ -4,6 +4,7 @@ import SEO from "../../components/seo";
 import { Link, navigate } from 'gatsby';
 import axios from 'axios';
 import apiConfig from '../../../api-config';
+import Cookies from 'js-cookie';
 
 
 class Login extends React.Component{
@@ -22,14 +23,14 @@ class Login extends React.Component{
     }
 
     componentDidMount(){
-        let self = this;
-        axios.get(apiConfig.APIURL + '/secure/user', { withCredentials: true })
-            .then((res) => {
-                self.setState({
-                    user: res.data
-                });
-            })
-            .catch(err => {});
+        let user = Cookies.getJSON('user');
+        if(user && user["auth"] === true){
+            this.setState({
+                user:{
+                    auth: true
+                }
+            });
+        }
     }
 
     handleChange(e){
@@ -55,6 +56,15 @@ class Login extends React.Component{
                         self.setState({
                             errorMessage: 'Login successful. Redirecting...'
                         })
+
+                        let username = self.state.username;
+                        username = username.charAt(0).toUpperCase() + username.slice(1);
+
+                        Cookies.set('user', 
+                            { auth: true, username: username },
+                            { expires: 3} 
+                        );
+
                         setTimeout(() => { navigate('/')}, 3000);
                     }
                     else{
