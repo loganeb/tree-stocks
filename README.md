@@ -1,7 +1,11 @@
 # Tree Stocks
-#### A MERN Stack website for viewing financial news and stock prices from the cannabis industry
+#### A MERN Stack web app for viewing financial news and stock prices from the cannabis industry
 
 Data provided for free by IEX. [View IEX’s Terms of Use](https://iextrading.com/api-exhibit-a/)
+
+I'm currently working on the build, but the app can be accessed here:
+
+https://unruffled-bose-08a0ca.netlify.com/
 
 ## API
 
