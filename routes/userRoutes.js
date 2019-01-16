@@ -17,7 +17,7 @@ router.post('/login', (req, res, next) => {
 
         req.login(user, {session: false}, (err) => {
             if(err){
-                return res.json({ sucess: false, message: 'Authentication failed.'});
+                return res.json({ success: false, message: 'Authentication failed.'});
             }
 
             const token = jwt.sign(user, process.env.TOKEN_SECRET);
@@ -34,6 +34,24 @@ router.get('/logout', (req, res, next) => {
     if(next){
         next();
     }
+});
+
+router.get('/watchlist', (req, res) => {
+    let token = jwt.verify(req.cookies[config.jwtName], process.env.TOKEN_SECRET);
+    req._id = token._id;
+    UserController.getWatchlist(req, res);
+})
+
+router.post('/watchlist/add', (req, res) => {
+    let token = jwt.verify(req.cookies[config.jwtName], process.env.TOKEN_SECRET);
+    req._id = token._id;
+    UserController.addToWatchlist(req, res);
+});
+
+router.post('/watchlist/update', (req, res) => {
+    let token = jwt.verify(req.cookies[config.jwtName], process.env.TOKEN_SECRET);
+    req._id = token._id;
+    UserController.updateWatchlist(req, res);
 });
 
 module.exports = router;

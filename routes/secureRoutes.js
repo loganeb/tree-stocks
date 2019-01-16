@@ -20,8 +20,4 @@ router.get('/user/profile', (req, res) => {
 
 router.get('/user/watchlist', UserController.getWatchlist);
 
-router.post('/user/watchlist/add', UserController.addToWatchlist);
-
-router.post('/user/watchlist/update', UserController.updateWatchlist);
-
 module.exports = router;

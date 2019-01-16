@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(logger('tiny'));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", req.headers.origin);
-    res.header("Access-Control-Allow-Headers", "Origin, Access-Control-Allow-Headers, Authorization, X-requested-with, X-Application, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-Application, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Content-type", "application/json");

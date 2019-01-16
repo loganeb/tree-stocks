@@ -39,7 +39,7 @@ class Watchlist extends React.Component {
     }
 
     loadWatchlist(){
-        axios.get(APIURL + '/secure/user/watchlist', { withCredentials: true })
+        axios.get(APIURL + '/user/watchlist', { withCredentials: true })
             .then(res => {
                 this.setState({
                     watchlist: res.data
@@ -57,11 +57,16 @@ class Watchlist extends React.Component {
     }
 
     handleAdd(){
-        axios.post(APIURL + '/secure/user/watchlist/add',
+        var self = this;
+
+        axios.post( APIURL + '/user/watchlist/add',
                 { symbols: [this.state.input] },
-                { withCredentials: true })
+                {withCredentials: true})
             .then(res => {
-                console.log(res.data);
+                this.setState({
+                    watchlist: res.data.watchlist,
+                    input: ''
+                })
             })
             .catch(err => {console.log(err)})
     }
@@ -87,7 +92,8 @@ class Watchlist extends React.Component {
                     <div className="watchlist-form">
                         <h3>Add a symbol to your watchlist: </h3>
                         <input 
-                        type="text" 
+                        type="text"
+                        value={this.state.input} 
                         onChange={this.handleChange}
                         placeholder="Enter symbol or name"
                         />

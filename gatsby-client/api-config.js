@@ -1,3 +1,3 @@
 module.exports = {
-    APIURL: process.env.APIURL || 'https://tree-stocks.herokuapp.com/api'
+    APIURL: process.env.APIURL || 'https://tree-stocks.herokuapp.com'
 };
