@@ -39,7 +39,7 @@ class Searchbar extends React.Component {
         }
 
         const matchMap = matches.map(match =>
-            <li key={match}><Link to={`/search/?q=${match}`} >{match}</Link></li>
+            <li key={match}><Link to={`/search/?q=${match}`}>{match}</Link></li>
         );
 
         this.setState({

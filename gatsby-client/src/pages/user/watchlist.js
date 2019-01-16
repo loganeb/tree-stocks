@@ -133,8 +133,10 @@ class Watchlist extends React.Component {
                     </div>
                     <div className="watchlist">
                         {this.state.watchlist.map(symbol => 
-                            <div className="watchlist-item">
-                                <span key={this.state.watchlist.indexOf(symbol)}>
+                            <div 
+                            className="watchlist-item"
+                            key={this.state.watchlist.indexOf(symbol)}>
+                                <span>
                                     {symbol}
                                 </span>
                             </div>

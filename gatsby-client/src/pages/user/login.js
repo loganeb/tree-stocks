@@ -90,20 +90,29 @@ class Login extends React.Component{
             return(
                 <Layout>
                     <SEO title="Login"/>
+                    <h1>Login</h1>
                     <div className="login-form">
-                        <h1>Login</h1>
                         <h3 className="error">{this.state.errorMessage}</h3>
-                        <input 
-                            type="text"
-                            name="username" 
-                            value={this.state.username} 
-                            onChange={this.handleChange}/>
-                        <input 
-                            type="password"
-                            name="password" 
-                            value={this.state.password} 
-                            onChange={this.handleChange}/>
-                        <button onClick={this.handleSubmit}>Login</button>
+                        <div className="login-form">
+                            <label htmlFor="username">Username</label>
+                            <input 
+                                type="text"
+                                name="username" 
+                                value={this.state.username}
+                                placeholder="username" 
+                                onChange={this.handleChange}/>
+                            <label htmlFor="password">Password</label>
+                            <input 
+                                type="password"
+                                name="password"
+                                placeholder="password" 
+                                value={this.state.password} 
+                                onChange={this.handleChange}/>
+                            <button onClick={this.handleSubmit}>Login</button>
+                        </div>
+                        <style>
+                            {style}
+                        </style>
                     </div>
                 </Layout>
             )
@@ -116,6 +125,31 @@ class Login extends React.Component{
             </Layout>
         )
     }
-}  
+} 
+
+const style = `
+    h1 {
+        margin-top: 10px;
+    }
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 5px;
+        text-align: center;
+    }
+
+    .login-form input {
+        max-width: 300px;
+        margin: 5px 0 5px 0;
+    }
+
+    .login-form button {
+        margin: 5px;
+    }
+`
 
 export default Login;
