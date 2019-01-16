@@ -16,13 +16,20 @@ class Watchlist extends React.Component {
             _id: '',
             username: '',
             watchlist: [],
-            input: ''
+            newList: [],
+            input: '',
+            edit: false,
+            errorMessage: ''
         }
         this.handleAdd = this.handleAdd.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.toggleEdit = this.toggleEdit.bind(this);
     }
 
     componentDidMount(){
+        console.log(APIURL);
         let user = Cookies.getJSON('user');
         if(user && user.auth === true){
             this.setState({
@@ -42,7 +49,8 @@ class Watchlist extends React.Component {
         axios.get(APIURL + '/user/watchlist', { withCredentials: true })
             .then(res => {
                 this.setState({
-                    watchlist: res.data
+                    watchlist: res.data,
+                    newList: res.data
                 });
             })
             .catch(err => {
@@ -57,21 +65,51 @@ class Watchlist extends React.Component {
     }
 
     handleAdd(){
-        var self = this;
+        let newList = this.state.newList.slice();
+        newList.unshift(this.state.input.toUpperCase());
+        this.setState({
+            newList: newList,
+            input: ''
+        });
+    }
 
-        axios.post( APIURL + '/user/watchlist/add',
-                { symbols: [this.state.input] },
-                {withCredentials: true})
+    handleRemove(e){
+        console.log(e.target.name);
+        let newList = this.state.newList.filter(symbol => symbol !== e.target.name);
+        this.setState({
+            newList: newList
+        });
+    }
+
+    handleSave(){
+        let self = this;
+        axios.post(APIURL + '/user/watchlist/update', 
+            { symbols: this.state.newList },
+            { withCredentials: true})
             .then(res => {
                 this.setState({
                     watchlist: res.data.watchlist,
+                    newList: res.data.watchlist,
+                    edit: false,
                     input: ''
                 })
             })
-            .catch(err => {console.log(err)})
+            .catch( err => {
+                this.setState({
+                    errorMessage: 'Error: Watchlist could not be saved'
+                })
+            })
+    }
+
+    toggleEdit(){
+        this.setState({
+            edit: !this.state.edit,
+            newList: this.state.watchlist
+        });
     }
 
     render(){
+        //Watchlist not rendered before authentication checked
         if(this.state.auth === null){
             return(
                 <Layout>
@@ -82,7 +120,9 @@ class Watchlist extends React.Component {
                 </Layout>
             )
         }
-        else if(this.state.auth === true){
+
+        //Watchlist page view if user logged in
+        else if(this.state.auth === true && !this.state.edit){
             return(
                 <Layout>
                     <SEO title="Watchlist"/>
@@ -90,7 +130,38 @@ class Watchlist extends React.Component {
                         <h2>{this.state.username}'s Watchlist</h2>
                     </div>
                     <div className="watchlist-form">
-                        <h3>Add a symbol to your watchlist: </h3>
+                        <button onClick={this.toggleEdit}>Edit Watchlist</button>
+                    </div>
+                    <div className="watchlist">
+                        {this.state.watchlist.map(symbol => 
+                            <div className="watchlist-item">
+                                <span key={this.state.watchlist.indexOf(symbol)}>
+                                    {symbol}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                    <style>
+                        {style}
+                    </style>
+                </Layout>
+            )
+        }
+
+        // Watchlist page view in edit mode
+        else if(this.state.auth === true && this.state.edit){
+            return(
+                <Layout>
+                    <SEO title="Watchlist"/>
+                    <div className="watchlist-header">
+                        <h2>{this.state.username}'s Watchlist</h2>
+                    </div>
+                    <br/>
+                    <span id="error-message">{this.state.errorMessage}</span>
+                    <button onClick={this.handleSave}>Save</button>
+                    <button onClick={this.toggleEdit}>Cancel</button>
+                    <div className="watchlist-form">
+                        <h4>Add a symbol to your watchlist: </h4>
                         <input 
                         type="text"
                         value={this.state.input} 
@@ -100,8 +171,18 @@ class Watchlist extends React.Component {
                         <button onClick={this.handleAdd}>Add</button>
                     </div>
                     <div className="watchlist">
-                        {this.state.watchlist.map(symbol => 
-                                <h6 key={symbol}>{symbol}</h6>
+                        {this.state.newList.map(symbol =>
+                            <div className="watchlist-item" 
+                            key={this.state.newList.indexOf(symbol)}> 
+                                <span>
+                                    {symbol}
+                                </span>
+                                <button 
+                                name={symbol}
+                                onClick={this.handleRemove}>
+                                    Delete
+                                </button>
+                            </div>
                         )}
                     </div>
                     <style>
@@ -110,6 +191,8 @@ class Watchlist extends React.Component {
                 </Layout>
             )
         }
+
+        // Watchlist page if user not logged in
         else{
             return(
                 <Layout>
@@ -128,8 +211,32 @@ class Watchlist extends React.Component {
 }
 
 const style = `
-    .watchlist-header{
+    .watchlist-header {
         margin-top: 10px;
+    }
+
+    .watchlist-form {
+        padding-top: 10px;
+    }
+
+    .watchlist-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: 50px;
+        width: 400px;
+        max-width: 100%;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .watchlist div:nth-child(odd) {
+        background: gray;
+    }
+
+    #error-message {
+        color: red;
     }
 `
 
