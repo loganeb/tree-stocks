@@ -51,7 +51,7 @@ class Ticker extends React.Component{
                             overflow: hidden;
                             box-sizing: border-box;
                             font-family: serif;
-                            box-shadow: 3px 3px 5px 0 rgba(0,0,0,0.5)
+                            box-shadow: 3px 3px 5px 0 rgba(0,0,0,0.5);
                           }
                           
                           .ticker-wrap {
@@ -77,6 +77,7 @@ class Ticker extends React.Component{
                             box-sizing: border-box;
                             overflow: hidden;
                             white-space: nowrap;
+                            z-index: 1;
                           }
                           
                           .ticker > li {

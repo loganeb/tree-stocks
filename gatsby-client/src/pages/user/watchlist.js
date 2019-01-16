@@ -82,7 +82,6 @@ class Watchlist extends React.Component {
     }
 
     handleSave(){
-        let self = this;
         axios.post(APIURL + '/user/watchlist/update', 
             { symbols: this.state.newList },
             { withCredentials: true})
