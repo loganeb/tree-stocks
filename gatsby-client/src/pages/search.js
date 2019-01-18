@@ -29,6 +29,9 @@ class Search extends React.Component{
 
     componentDidMount(){
         let self = this;
+
+        //Load data to be searched from API
+        //Will be an object i.e. { "SYMBOL":{data}, "SYMBOL":{data}, ... }
         axios.get(apiConfig.APIURL + '/stock/symbols/full')
             .then(res => {
                 self.setState({
@@ -40,6 +43,7 @@ class Search extends React.Component{
                 console.log(err);
             })
         
+        // Trigger handleSearch when user presses enter
         document.getElementById('search-input').onkeypress = function(e){
             let event = e || window.event;
             var charCode = event.keyCode;
@@ -60,12 +64,14 @@ class Search extends React.Component{
 
         if(search.length < 1 || search === ' ') return;
 
+        //Filter API symbols by matches
         const filterResults = (symbol) => {
-            return symbol.symbol.toLowerCase().includes(search) || symbol.name.toLowerCase().includes(search)
+            return symbol.company.symbol.toLowerCase().includes(search) || symbol.company.companyName.toLowerCase().includes(search)
         }
 
         if(search.length > 0 && search !== ' '){
-            let symbols = this.state.symbols;
+            //Convert object sent from API to array
+            let symbols = Object.values(this.state.symbols);
             let results = symbols.filter(filterResults);
             this.setState({
                 results: results
@@ -74,6 +80,7 @@ class Search extends React.Component{
         }
     }
 
+    //Allows user to increase number of search results shown
     showMore(){
         this.setState({
             show: this.state.show + 20
@@ -99,15 +106,15 @@ class Search extends React.Component{
                 </div>
                 <div className="search-results">
                     {this.state.results.slice(0, this.state.show).map(result => 
-                        <div className="result" key={result.symbol}>
-                            <h4>{result.symbol}</h4>
-                            <h5>{result.name}</h5>
+                        <div className="result" key={result.company.symbol}>
+                            <h4>{result.company.symbol}</h4>
+                            <h5>{result.company.companyName}</h5>
                         </div>    
                     )}
                     {this.state.show > this.state.results.length ? '' : 
                         <button onClick={this.showMore}>Show More</button>
                     }
-                    {this.state.results.length > 0 && this.state.input.length > 0 ? '' : <h3>No Results</h3>}
+                    {this.state.results.length === 0 ? <h3>No Results</h3> : ''}
                 </div>
                 <style>
                     {style}

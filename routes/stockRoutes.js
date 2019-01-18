@@ -73,7 +73,7 @@ router.get('/symbols', (req, res) => {
 });
 
 router.get('/symbols/full', (req, res) => {
-    axios.get(`https://api.iextrading.com/1.0/ref-data/symbols`)
+    axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${SYMBOLS.join(',')}&types=company`)
         .then( iexRes => {
             res.status(200).send(iexRes.data);
         })
