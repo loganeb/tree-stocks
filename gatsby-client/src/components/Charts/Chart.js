@@ -1,8 +1,9 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import axios from 'axios';
+import apiConfig from '../../../api-config';
 
-const APIROOT = process.env.APIURL || 'http://localhost:8080/api';
+const APIROOT = apiConfig.APIURL;
 
 class Chart extends React.Component {
     constructor(props){
@@ -10,15 +11,33 @@ class Chart extends React.Component {
         this.state = {
             data: [],
             toPlot: {},
-            layout: {}
+            layout: {},
+            span: this.props.span,
+            symbol: this.props.symbol
         }
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount(){
-        axios.get(APIROOT + `/stock/chart/${this.props.span}/${this.props.symbol}`)
+        axios.get(APIROOT + `/stock/chart/${this.state.span}/${this.state.symbol}`)
             .then((res) => {
                 this.setState({
                     data: res.data,
+                })
+            })
+            .catch(err => {
+                console.log(err)
+            });
+    }
+
+    handleChange(e){
+        let value = e.target.value;
+        let self = this;
+        axios.get(APIROOT + `/stock/chart/${e.target.value}/${this.state.symbol}`)
+            .then((res) => {
+                self.setState({
+                    data: res.data,
+                    span: value
                 })
             })
             .catch(err => {
@@ -34,8 +53,8 @@ class Chart extends React.Component {
 
             for(let i = 0; i < data.length; i++){
                 if(data[i].high > 0){
-                    this.props.span === '1d' ? x.push(data[i].minute) : x.push(data[i].date);
-                    this.props.span === '1d' ? y.push(data[i].high) : y.push(data[i].close);
+                    this.state.span === '1d' ? x.push(data[i].minute) : x.push(data[i].date);
+                    this.state.span === '1d' ? y.push(data[i].high) : y.push(data[i].close);
                 }
             };
 
@@ -60,18 +79,25 @@ class Chart extends React.Component {
             ];
 
             return(
-                <Plot
-                    data={toPlot}
-                    layout={{
-                        width:600, 
-                        height: 300, 
-                        title: `${this.props.symbol} Prices`,
-                        yaxis: {
-                            range: [min, max],
-                        } 
-                    }}
-                >
-                </Plot>
+                <div>
+                    <Plot
+                        data={toPlot}
+                        layout={{
+                            width:600, 
+                            height: 300, 
+                            title: `${this.state.symbol} Prices`,
+                            yaxis: {
+                                range: [min, max],
+                            } 
+                        }}
+                    >
+                    </Plot>
+                    <select onChange={this.handleChange}>
+                        <option value="1d">1 Day</option>
+                        <option value="1m">1 Month</option>
+                        <option value="1y">1 Year</option>
+                    </select>
+                </div>
             )
         }
     

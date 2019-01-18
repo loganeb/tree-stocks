@@ -128,7 +128,7 @@ const style = `
     #search-input {
         margin-top: 10px;
         width: 700px;
-        max-width: 100%;
+        max-width: 80%;
     }
 
     .search-header {
