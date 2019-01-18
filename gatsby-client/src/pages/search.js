@@ -1,18 +1,136 @@
 import React from 'react';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
+import axios from 'axios';
+import apiConfig from '../../api-config';
 
-const SearchPage = ({ location }) => {
-    let query = location.search;
-    let searchTerm = query.substr(query.lastIndexOf('=') + 1);
-
-    return(
-        <Layout>
-            <SEO title="Search" keywords={[`stocks`, `cannabis`, `prices`]} />
-            <h1>Search</h1>
-            <h2>{`"${searchTerm}"`}</h2>
-        </Layout>
-    );
+const parseQuery = (query) => {
+    if(query.length > 1){
+        let searchTerm = query.substr(query.lastIndexOf('=') + 1);
+        return searchTerm;
+    }
+    return '';
 }
 
-export default SearchPage;
+class Search extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            query: parseQuery(this.props.location.search),
+            symbols: [],
+            results: [],
+            input: parseQuery(this.props.location.search),
+            show: 10
+        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+        this.showMore = this.showMore.bind(this);
+    }
+
+    componentDidMount(){
+        let self = this;
+        axios.get(apiConfig.APIURL + '/stock/symbols/full')
+            .then(res => {
+                self.setState({
+                    symbols: res.data
+                })
+                self.handleSearch();
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        
+        document.getElementById('search-input').onkeypress = function(e){
+            let event = e || window.event;
+            var charCode = event.keyCode;
+            if(charCode == '13'){
+                self.handleSearch();
+            }
+        }
+    }
+
+    handleChange(e){
+        this.setState({
+            input: e.target.value
+        });
+    }
+
+    handleSearch(){
+        let search = this.state.input.toLowerCase();
+
+        if(search.length < 1 || search === ' ') return;
+
+        const filterResults = (symbol) => {
+            return symbol.symbol.toLowerCase().includes(search) || symbol.name.toLowerCase().includes(search)
+        }
+
+        if(search.length > 0 && search !== ' '){
+            let symbols = this.state.symbols;
+            let results = symbols.filter(filterResults);
+            this.setState({
+                results: results
+            });
+            return;
+        }
+    }
+
+    showMore(){
+        this.setState({
+            show: this.state.show + 20
+        });
+    }
+
+    render(){
+        return(
+            <Layout>
+                <SEO title="Search"/>
+                <input 
+                    id="search-input"
+                    type="text" 
+                    name="search" 
+                    placeholder="Search"
+                    value={this.state.input}
+                    onChange={this.handleChange}
+                />
+                <button onClick={this.handleSearch}>Search</button>
+                <div className="search-header">
+                    {this.state.query.length > 0 ? <h2>"{this.state.query}"</h2> : ''}
+                    <h4>Results: </h4>
+                </div>
+                <div className="search-results">
+                    {this.state.results.slice(0, this.state.show).map(result => 
+                        <div className="result" key={result.symbol}>
+                            <h4>{result.symbol}</h4>
+                            <h5>{result.name}</h5>
+                        </div>    
+                    )}
+                    {this.state.show > this.state.results.length ? '' : 
+                        <button onClick={this.showMore}>Show More</button>
+                    }
+                    {this.state.results.length > 0 && this.state.input.length > 0 ? '' : <h3>No Results</h3>}
+                </div>
+                <style>
+                    {style}
+                </style>
+            </Layout>
+        )
+    }
+}
+
+const style = `
+    #search-input {
+        margin-top: 10px;
+        width: 700px;
+        max-width: 100%;
+    }
+
+    .search-header {
+        margin-top: 10px;
+    }
+
+    .searchbar {
+        visibility: hidden;
+    }
+`
+
+export default Search;

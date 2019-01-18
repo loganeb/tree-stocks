@@ -119,7 +119,7 @@ class Login extends React.Component{
         }
         return(
             <Layout>
-                <SEO title="login"/>
+                <SEO title="Login"/>
                 <h3>You are already logged in.</h3>
                 <Link to="/user/logout">Logout</Link>
             </Layout>

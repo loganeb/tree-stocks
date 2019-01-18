@@ -72,6 +72,17 @@ router.get('/symbols', (req, res) => {
     res.status(200).send(SYMBOLS);
 });
 
+router.get('/symbols/full', (req, res) => {
+    axios.get(`https://api.iextrading.com/1.0/ref-data/symbols`)
+        .then( iexRes => {
+            res.status(200).send(iexRes.data);
+        })
+        .catch( err => {
+            console.log(err);
+            res.status(400).send('Symbols could not be retrieved.');
+        })
+})
+
 router.get('/news', (req, res) => {
     axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${SYMBOLS.join(',')}&types=news`)
         .then((iexRes) => {
