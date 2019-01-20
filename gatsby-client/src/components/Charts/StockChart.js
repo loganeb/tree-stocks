@@ -8,7 +8,7 @@ class StockChart extends React.Component {
         super(props);
         this.state = {
             data: [],
-            ...props
+            ...this.props
         }
     }
 
