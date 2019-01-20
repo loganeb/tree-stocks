@@ -1,7 +1,6 @@
 import React from 'react';
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import { Link, navigate } from 'gatsby';
 import apiConfig from '../../api-config';
 import axios from 'axios';
 import Chart from '../components/Charts/Chart';
@@ -57,11 +56,29 @@ class Stock extends React.Component {
         return(
             <Layout>
                 <SEO title="Stock"/>
-                <h2>{this.state.query}</h2>
-                {this.state.plot}
+                <div className="stock-container">
+                    <div className="stock">
+                        <h2>{this.state.query}</h2>
+                        {this.state.plot}
+                    </div>
+                    <style>
+                        {style}
+                    </style>
+                </div>
+
+                
             </Layout>
         )
     }
 }
+
+const style = `
+    .stock {
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+`;
 
 export default Stock;

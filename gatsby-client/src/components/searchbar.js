@@ -39,7 +39,7 @@ class Searchbar extends React.Component {
         }
 
         const matchMap = matches.map(match =>
-            <li key={match}><Link to={`/stock/?symbol=${match}`}>{match}</Link></li>
+            <li key={match}><a href={`/stock/?symbol=${match}`}>{match}</a></li>
         );
 
         this.setState({

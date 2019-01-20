@@ -21,40 +21,22 @@ class Chart extends React.Component {
     componentDidMount(){
         axios.get(APIROOT + `/stock/chart/${this.state.span}/${this.state.symbol}`)
             .then((res) => {
-                this.setState({
-                    data: res.data,
-                })
+                this.loadData(res.data, this.state.span);
             })
             .catch(err => {
                 console.log(err)
             });
     }
 
-    handleChange(e){
-        let value = e.target.value;
-        let self = this;
-        axios.get(APIROOT + `/stock/chart/${e.target.value}/${this.state.symbol}`)
-            .then((res) => {
-                self.setState({
-                    data: res.data,
-                    span: value
-                })
-            })
-            .catch(err => {
-                console.log(err)
-            });
-    }
-
-    render(){
-        if(this.state.data.length > 0){
+    loadData(data, span){
+        if(data.length > 0){
             let x = [];
             let y = [];
-            let data = this.state.data;
 
             for(let i = 0; i < data.length; i++){
                 if(data[i].high > 0){
-                    this.state.span === '1d' ? x.push(data[i].minute) : x.push(data[i].date);
-                    this.state.span === '1d' ? y.push(data[i].high) : y.push(data[i].close);
+                    span === '1d' ? x.push(data[i].minute) : x.push(data[i].date);
+                    span === '1d' ? y.push(data[i].high) : y.push(data[i].close);
                 }
             };
 
@@ -78,25 +60,55 @@ class Chart extends React.Component {
                 }
             ];
 
+            let layout = {
+                width:600, 
+                height: 300, 
+                title: `${this.state.symbol} Prices (USD)`,
+                yaxis: {
+                    range: [min, max],
+                } 
+            }
+
+            this.setState({
+                toPlot: toPlot,
+                layout: layout,
+                data: data,
+                span: span
+            })
+        }
+    }
+
+    handleChange(e){
+        let span = e.target.value;
+        let self = this;
+        axios.get(APIROOT + `/stock/chart/${e.target.value}/${this.state.symbol}`)
+            .then((res) => {
+                self.loadData(res.data, span);
+            })
+            .catch(err => {
+                console.log(err)
+            });
+    }
+
+    render(){
+        if(this.state.data.length > 0){
             return(
-                <div>
-                    <Plot
-                        data={toPlot}
-                        layout={{
-                            width:600, 
-                            height: 300, 
-                            title: `${this.state.symbol} Prices`,
-                            yaxis: {
-                                range: [min, max],
-                            } 
-                        }}
-                    >
-                    </Plot>
-                    <select onChange={this.handleChange}>
+                <div className="chart">
+                    <label htmlFor="span">Time Span</label>
+                    <select onChange={this.handleChange} name="span">
                         <option value="1d">1 Day</option>
                         <option value="1m">1 Month</option>
                         <option value="1y">1 Year</option>
                     </select>
+                    <Plot
+                        data={this.state.toPlot}
+                        layout={this.state.layout}
+                    >
+                    </Plot>
+
+                    <style>
+                        {style}
+                    </style>
                 </div>
             )
         }
@@ -109,7 +121,26 @@ class Chart extends React.Component {
             )
         }
 
-}
+    }
 };
+
+const style = `
+    .chart{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 2px solid #333;
+        border-radius: 5px;
+    }
+
+    select {
+        height: 25px;
+    }
+
+    .js-plotly-plot {
+        padding: 0;
+        margin: 0;
+    }
+`
 
 export default Chart;

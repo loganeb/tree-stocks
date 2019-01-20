@@ -30,7 +30,7 @@ class Ticker extends React.Component{
                     <ul className="ticker">
                         {this.state.symbols.map(symbol => 
                             <li key={symbol.symbol}>
-                                <a href={'/search?q=' + symbol.symbol}>
+                                <a href={'/stock?symbol=' + symbol.symbol}>
                                     <strong>{symbol.symbol}</strong>
                                     <span>
                                         ${(symbol.price).toFixed(2)}(
