@@ -2,7 +2,8 @@ import React from 'react';
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 //import Chart from "../components/Charts/Chart";
-//import { Link, navigate } from 'gatsby';
+import StockChart from "../components/Charts/StockChart";
+import { Link, navigate } from 'gatsby';
 import apiConfig from '../../api-config';
 import axios from 'axios';
 const APIURL = apiConfig.APIURL;
@@ -24,7 +25,7 @@ class Stock extends React.Component {
             plot: '',
             span: '1d'
         }
-        this.plotSymbol = this.plotSymbol.bind(this);
+        //this.plotSymbol = this.plotSymbol.bind(this);
     }
 
     componentDidMount(){
@@ -56,6 +57,7 @@ class Stock extends React.Component {
             <Layout>
                 <SEO title="Stock"/>
                 <h2>{this.state.query}</h2>
+                <StockChart symbol={this.state.query} span="1d" />
             </Layout>
         )
     }
