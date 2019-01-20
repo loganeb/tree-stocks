@@ -1,9 +1,8 @@
 import React from 'react';
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import Chart from "../components/Charts/Chart";
-import { Link, navigate } from 'gatsby';
-import Cookies from 'js-cookie';
+//import Chart from "../components/Charts/Chart";
+//import { Link, navigate } from 'gatsby';
 import apiConfig from '../../api-config';
 import axios from 'axios';
 const APIURL = apiConfig.APIURL;
@@ -34,8 +33,8 @@ class Stock extends React.Component {
                 this.setState({
                     symbols: res.data
                 })
-                if(this.state.query.length > 0)
-                    this.plotSymbol();
+                /* if(this.state.query.length > 0)
+                    this.plotSymbol(); */
             })
             .catch(err => {
                 console.log('Error retrieving symbols.')
@@ -43,21 +42,20 @@ class Stock extends React.Component {
     }
 
 
-    plotSymbol(){
+    /* plotSymbol(){
         if(this.state.symbols.includes(this.state.query.toUpperCase())){
             let {query, span} = this.state;
             this.setState({
                 plot: <Chart span={span} symbol={query}/>
             })
         }
-    }
+    } */
 
     render(){
         return(
             <Layout>
                 <SEO title="Stock"/>
                 <h2>{this.state.query}</h2>
-                {this.state.plot}
             </Layout>
         )
     }

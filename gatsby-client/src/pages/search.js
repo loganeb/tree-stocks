@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import axios from 'axios';
+import { Link } from 'gatsby';
 import apiConfig from '../../api-config';
 
 const parseQuery = (query) => {
@@ -107,7 +108,11 @@ class Search extends React.Component{
                 <div className="search-results">
                     {this.state.results.slice(0, this.state.show).map(result => 
                         <div className="result" key={result.company.symbol}>
-                            <h4>{result.company.symbol}</h4>
+                            <h4>
+                                <Link to={'/stock?symbol=' + result.company.symbol}>
+                                    {result.company.symbol}
+                                </Link>
+                            </h4>
                             <h5>{result.company.companyName}</h5>
                         </div>    
                     )}

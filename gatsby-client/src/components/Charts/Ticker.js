@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import apiConfig from '../../../api-config';
+import { Link } from 'gatsby';
 
 class Ticker extends React.Component{
     constructor(props){
@@ -28,19 +29,19 @@ class Ticker extends React.Component{
                 <div className="ticker-wrap">
                     <ul className="ticker">
                         {this.state.symbols.map(symbol => 
-                            <li 
-                            key={symbol.symbol}
-                            >
-                                <strong>{symbol.symbol}</strong>
-                                <span>
-                                    ${(symbol.price).toFixed(2)}(
-                                    <span style={{color: symbol.change < 0 ? 'red' : 'green'}}>
-                                        {symbol.change < 0 ? '' : '+'}
-                                        {Math.round(symbol.change * 10000)/100}%
+                            <li key={symbol.symbol}>
+                                <a href={'/search?q=' + symbol.symbol}>
+                                    <strong>{symbol.symbol}</strong>
+                                    <span>
+                                        ${(symbol.price).toFixed(2)}(
+                                        <span style={{color: symbol.change < 0 ? 'red' : 'green'}}>
+                                            {symbol.change < 0 ? '' : '+'}
+                                            {Math.round(symbol.change * 10000)/100}%
+                                        </span>
+                                        )
                                     </span>
-                                    )
-                                </span>
-                            </li>    
+                                </a>
+                            </li>  
                         )}
                     </ul>
                 </div>
@@ -79,6 +80,11 @@ class Ticker extends React.Component{
                             white-space: nowrap;
                             z-index: 1;
                           }
+
+                          .ticker li > a {
+                              color: #333;
+                              text-decoration: none;
+                          }
                           
                           .ticker > li {
                             display: inline;
@@ -91,7 +97,7 @@ class Ticker extends React.Component{
                             border: none;
                           }
                           
-                          .ticker > li > span {
+                          .ticker > li > a >span {
                             padding: 5px;
                           }
                           
