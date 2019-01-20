@@ -8,7 +8,8 @@ class StockChart extends React.Component {
         super(props);
         this.state = {
             data: [],
-            ...this.props
+            symbol: this.props.symbol,
+            span: this.props.span ? this.props.span : '1d'
         }
     }
 
