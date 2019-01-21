@@ -21,7 +21,7 @@ const apiLimiter = rateLimit({
 })
 const userLimiter = rateLimit({
     windowMs: 60*1000,
-    max: 5,  //User route requests blocked after 5 per minute
+    max: 20,  //User route requests blocked after 20 per minute
     message: 'Too many requests. Try again later.'
 });
 

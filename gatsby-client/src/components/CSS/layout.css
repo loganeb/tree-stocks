@@ -620,14 +620,19 @@ pre tt:after {
   content: '';
 }
 
-.navbar > nav > a{
-  text-decoration: none;
-  color: white;
-  padding: 5px;
+.body-button {
+  background: #ddd;
+  color: #333;
+  border: 2px solid #333;
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px 0 rgba(0,0,0,0.5);
+  height: 40px;
+  margin: 5px;
+  margin-bottom: 10px;
 }
 
-.navbar > nav > a:hover {
-  color: gray;
+.body-button:hover {
+  box-shadow: 4px 4px 5px 0 rgba(0,0,0,0.5);
 }
 
 @media only screen and (max-width: 480px) {

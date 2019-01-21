@@ -6,6 +6,15 @@ import axios from 'axios';
 import apiConfig from '../../../api-config';
 import Cookies from 'js-cookie';
 
+const logout = () => {
+    axios.get(apiConfig.APIURL + '/user/logout', { withCredentials: true})
+        .then(() =>{ 
+            Cookies.set('user', '', {expires: 0});
+            navigate('/');
+            })
+        .catch((err) => navigate('/'));
+}
+
 export default (props) => {
     if(props.location.state && props.location.state.loggedOut){
         return(
@@ -23,21 +32,16 @@ export default (props) => {
             <div>
                 <h3>Log out?</h3>
                 <div>
-                    <button onClick={
-                        () => {
-                            axios.get(apiConfig.APIURL + '/user/logout', { withCredentials: true})
-                                .then(() =>{ 
-                                    Cookies.set('user', '', {expires: 0});
-                                    navigate('/');
-                                 })
-                                .catch((err) => navigate('/'));
-                        }
-                    }>Yes</button>
-                    <button onClick={
-                        () => {
-                            navigate('/');
-                        }
-                    }>No</button>
+                    <button 
+                    onClick={logout}
+                    className="body-button">
+                        Yes
+                    </button>
+                    <button 
+                    onClick={() => navigate('/')}
+                    className="body-button">
+                        No
+                    </button>
                 </div>
             </div>
         </Layout>

@@ -151,7 +151,11 @@ class Watchlist extends React.Component {
                         <h2>{this.state.username}'s Watchlist</h2>
                     </div>
                     <div className="watchlist-form">
-                        <button onClick={this.toggleEdit}>Edit Watchlist</button>
+                        <button 
+                        onClick={this.toggleEdit}
+                        className="body-button">
+                            Edit Watchlist
+                        </button>
                     </div>
                     <div className="watchlist">
                         {this.state.watchlist.map(symbol => 
@@ -185,12 +189,22 @@ class Watchlist extends React.Component {
                         <h2>{this.state.username}'s Watchlist</h2>
                     </div>
                     <br/>
+
                     {this.state.errorMessage ? 
                         <h5 id="error-message">{this.state.errorMessage}</h5>
                         : ''
                     }
-                    <button onClick={this.handleSave}>Save</button>
-                    <button onClick={this.toggleEdit}>Cancel</button>
+
+                    <button 
+                    onClick={this.handleSave}
+                    className="body-button">
+                        Save
+                    </button>
+                    <button 
+                    onClick={this.toggleEdit}
+                    className="body-button">
+                        Cancel
+                    </button>
                     <div className="watchlist-form">
                         <h4>Add a symbol to your watchlist: </h4>
                         <input 
@@ -199,7 +213,11 @@ class Watchlist extends React.Component {
                         onChange={this.handleChange}
                         placeholder="Enter symbol or name"
                         />
-                        <button onClick={this.handleAdd}>Add</button>
+                        <button 
+                        onClick={this.handleAdd}
+                        className="body-button add">
+                            Add
+                        </button>
                     </div>
                     <div className="watchlist">
                         {this.state.newList.map(symbol =>
@@ -210,7 +228,8 @@ class Watchlist extends React.Component {
                                 </span>
                                 <button 
                                 name={symbol}
-                                onClick={this.handleRemove}>
+                                onClick={this.handleRemove}
+                                className="body-button delete">
                                     Delete
                                 </button>
                             </div>
@@ -242,6 +261,13 @@ class Watchlist extends React.Component {
 }
 
 const style = `
+    .watchlist {
+        border: 2px solid #bbb;
+        border-radius: 5px;
+        width: 420px;
+        max-width: 100%;
+    }
+
     .watchlist-header {
         margin-top: 10px;
     }
@@ -265,6 +291,7 @@ const style = `
 
     .watchlist-item:hover {
         color: #000;
+        box-shadow: 2px 2px 3px 0 rgba(0,0,0,0.5);
     }
 
     .watchlist div:nth-child(odd) {
@@ -277,6 +304,29 @@ const style = `
 
     #error-message {
         color: red;
+    }
+
+    .body-button {
+        background: #ddd;
+        color: #333;
+        border: 2px solid #333;
+        border-radius: 5px;
+        box-shadow: 2px 2px 3px 0 rgba(0,0,0,0.5);
+        height: 40px;
+        margin: 5px;
+        margin-bottom: 10px;
+    }
+
+    .body-button:hover {
+        box-shadow: 4px 4px 5px 0 rgba(0,0,0,0.5);
+    }
+
+    .add {
+        background: rgba(100,200,100,1);
+    }
+
+    .delete {
+        background: rgba(200,100,100,1);
     }
 `
 
