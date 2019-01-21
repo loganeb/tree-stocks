@@ -32,6 +32,9 @@ class Navbar extends React.Component{
                 <div className="navbar">
                     <nav>
                         <Link to="/user/account">Hi, {this.state.user.username}!</Link>
+                        <span className="search">
+                            <Link to="/search">Search</Link>
+                        </span>
                         <Link to="/user/watchlist">Watchlist</Link>
                         <Link to="/user/account">Account</Link>
                         <Link to="/user/logout">Logout</Link>
@@ -43,6 +46,9 @@ class Navbar extends React.Component{
             return(
                 <div className="navbar">
                     <nav>
+                        <span className="search">
+                            <Link to="/search">Search</Link>
+                        </span>
                         <Link to="/user/login">Login</Link>
                         <Link to="/user/signup">Signup</Link>
                     </nav>

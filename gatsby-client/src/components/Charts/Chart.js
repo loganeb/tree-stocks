@@ -12,8 +12,7 @@ class Chart extends React.Component {
             data: [],
             toPlot: {},
             layout: {},
-            span: this.props.span,
-            symbol: this.props.symbol
+            ...this.props
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -75,6 +74,21 @@ class Chart extends React.Component {
                 data: data,
                 span: span
             })
+        }else{
+            console.log('No data.')
+            this.setState({
+                toPlot:{
+                    x: [0, 1],
+                    y: [0, 30],
+                    mode: 'lines',
+                    type: 'scatter',
+                },
+                layout: {
+                    width:600, 
+                    height: 300, 
+                    title: `${this.state.symbol} Prices (USD)`,
+                }
+            })
         }
     }
 
@@ -95,7 +109,11 @@ class Chart extends React.Component {
             return(
                 <div className="chart">
                     <label htmlFor="span">Time Span</label>
-                    <select onChange={this.handleChange} name="span">
+                    <select 
+                        onChange={this.handleChange} 
+                        name="span"
+                        value={this.state.span}
+                    >
                         <option value="1d">1 Day</option>
                         <option value="1m">1 Month</option>
                         <option value="1y">1 Year</option>

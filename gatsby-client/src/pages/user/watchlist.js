@@ -17,6 +17,7 @@ class Watchlist extends React.Component {
             username: '',
             watchlist: [],
             newList: [],
+            companies: {},
             input: '',
             edit: false,
             errorMessage: ''
@@ -52,25 +53,46 @@ class Watchlist extends React.Component {
                     watchlist: res.data,
                     newList: res.data
                 });
+                this.loadCompanies();
             })
             .catch(err => {
                 console.log('Error getting watchlist.');
             });
     }
 
+    loadCompanies(){
+        axios.get(APIURL + '/stock/symbols/full')
+            .then(res => {
+                this.setState({
+                    companies: res.data
+                })
+            })
+            .catch(err => {
+                console.log('Error retrieving company data.');
+            })
+    }
+
     handleChange(e){
         this.setState({
-            input: e.target.value
+            input: e.target.value,
+            errorMessage: ''
         });
     }
 
     handleAdd(){
-        let newList = this.state.newList.slice();
-        newList.unshift(this.state.input.toUpperCase());
-        this.setState({
-            newList: newList,
-            input: ''
-        });
+        if(Object.keys(this.state.companies).includes(this.state.input.toUpperCase())){
+            let newList = this.state.newList.slice();
+            newList.unshift(this.state.input.toUpperCase());
+            this.setState({
+                newList: newList,
+                input: ''
+            });
+        }
+        else{
+            this.setState({
+                errorMessage: "Symbol not found."
+            })
+        }
     }
 
     handleRemove(e){
@@ -135,9 +157,14 @@ class Watchlist extends React.Component {
                         {this.state.watchlist.map(symbol => 
                             <div 
                             className="watchlist-item"
-                            key={this.state.watchlist.indexOf(symbol)}>
-                                <span>
+                            key={this.state.watchlist.indexOf(symbol)}
+                            onClick={() => navigate(`/stock?symbol=` + symbol)}>
+                                <span className="symbol">
                                     {symbol}
+                                </span>
+                                <span className="company">
+                                    {this.state.companies[symbol] ?
+                                        this.state.companies[symbol].company.companyName : ''}
                                 </span>
                             </div>
                         )}
@@ -158,7 +185,10 @@ class Watchlist extends React.Component {
                         <h2>{this.state.username}'s Watchlist</h2>
                     </div>
                     <br/>
-                    <span id="error-message">{this.state.errorMessage}</span>
+                    {this.state.errorMessage ? 
+                        <h5 id="error-message">{this.state.errorMessage}</h5>
+                        : ''
+                    }
                     <button onClick={this.handleSave}>Save</button>
                     <button onClick={this.toggleEdit}>Cancel</button>
                     <div className="watchlist-form">
@@ -230,10 +260,19 @@ const style = `
         max-width: 100%;
         margin: 5px;
         padding: 5px;
+        cursor: pointer;
+    }
+
+    .watchlist-item:hover {
+        color: #000;
     }
 
     .watchlist div:nth-child(odd) {
-        background: gray;
+        background: #bbb;
+    }
+
+    .company {
+        font-size: 0.9em;
     }
 
     #error-message {

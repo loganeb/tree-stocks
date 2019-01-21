@@ -23,7 +23,7 @@ class Stock extends React.Component {
             query: getQuery(this.props.location.search),
             symbols: [],
             plot: '',
-            span: '1d'
+            span: '1m'
         }
         this.plotSymbol = this.plotSymbol.bind(this);
     }

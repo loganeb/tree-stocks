@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Arimo');
 @import url('https://fonts.googleapis.com/css?family=Merriweather');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css');
 
 html {
   font-family: 'Arimo', sans-serif;
@@ -635,9 +636,4 @@ pre tt:after {
   }
 }
 
-@media only screen and (max-width: 600px){
-  .searchbar{
-    visibility: hidden;
-  }
-}
 

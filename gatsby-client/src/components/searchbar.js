@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'gatsby';
 import axios from 'axios';
 import apiConfig from '../../api-config';
+import SearchIcon from '../images/search.svg';
+import { navigate } from 'gatsby';
 
 class Searchbar extends React.Component {
     constructor(props) {
@@ -24,6 +25,14 @@ class Searchbar extends React.Component {
                 })
             })
             .catch(err => {})
+
+        document.getElementById('searchbar-input').onkeypress = function(e){
+            let event = e || window.event;
+            var charCode = event.keyCode;
+            if(charCode == '13'){
+                navigate('/search?q=' + self.state.input);
+            }
+        }
     }
 
     mapSuggestions = (event) => {
@@ -39,7 +48,7 @@ class Searchbar extends React.Component {
         }
 
         const matchMap = matches.map(match =>
-            <li key={match}><a href={`/stock/?symbol=${match}`}>{match}</a></li>
+            <li key={match}><a href={`/search/?q=${match}`}>{match}</a></li>
         );
 
         this.setState({
@@ -59,10 +68,17 @@ class Searchbar extends React.Component {
                     position: "absolute",
                 }}>
                 <input 
+                id="searchbar-input"
                 type="text" 
                 placeholder="Search symbols" 
                 value={this.state.input}
                 onChange={this.mapSuggestions} />
+                <button 
+                    onClick={() => navigate('/search?q=' + this.state.input)}
+                    className="searchbar-button"
+                    alt="search">
+                    <i className="fa fa-search"></i>
+                </button>
                 <ul className="suggestions">{this.state.matches}</ul>
                 <style>
                     {style}
@@ -78,11 +94,35 @@ const style = `
     .searchbar {
         margin: 5px;
         margin-right: 50px;
-        display: inline-block;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 5px;
         right: 0;
         top: 60;
         position: absolute;
         z-index: 10;
+    }
+
+    .searchbar input {
+        height: 40px;
+        border-radius: 5px;
+    }
+
+    .searchbar-button {
+        height: 40px;
+        width: 40px;
+        border: none;
+        margin: 0;
+        padding-top: 2px;
+        margin-left: 5px;
+        border-radius: 40px;
+        background: #eee;
+    }
+
+    .searchbar-button:hover {
+        opacity: 0.8;
     }
 
     .suggestions {
@@ -103,6 +143,12 @@ const style = `
 
     .suggestions li > a:hover {
         color: #555;
+    }
+
+    @media only screen and (max-width: 650px){
+       .searchbar {
+           visibility: hidden;
+       }
     }
 `
 
