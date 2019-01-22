@@ -4,7 +4,7 @@ import SEO from "../../components/seo";
 import { Link, navigate } from 'gatsby';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import apiConfig from '../../apiConfig';
+import apiConfig from '../../../api-config';
 
 const URL = apiConfig.APIURL;
 
