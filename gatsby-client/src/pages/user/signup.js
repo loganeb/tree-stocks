@@ -4,8 +4,9 @@ import SEO from "../../components/seo";
 import { Link, navigate } from 'gatsby';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import apiConfig from '../../apiConfig';
 
-const URL = process.env.APIURL || 'http://localhost:8080/api';
+const URL = apiConfig.APIURL;
 
 class Signup extends React.Component{
     constructor(props){
